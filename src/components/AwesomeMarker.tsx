@@ -1,13 +1,11 @@
 import React, { useEffect, useRef } from 'react';
 import L from 'leaflet';
-import AwesomeMarker from 'leaflet.awesome-markers';
+import 'leaflet.awesome-markers';
 
-export type AwesomeMarkerProps = {
+export type AwesomeMarkerProps = L.AwesomeMarkers.AwesomeMarkersIconOptions & {
   position: L.LatLngExpression;
-  icon?: L.IconOptions;
   onClick?: () => void;
   iconColor?: string;
-  markerColor?: string;
   prefix?: string;
 };
 
@@ -23,21 +21,12 @@ const AwesomeMarker: React.FC<AwesomeMarkerProps> = ({
 
   useEffect(() => {
     if (!markerRef.current) {
-      const customIcon = L.divIcon({
-        icon: icon?.iconUrl ? undefined : 'info-sign',
+      const customIcon = L.AwesomeMarkers.icon({
+        icon: icon ?? 'info-sign',
         iconColor,
         markerColor,
         prefix,
-        ...icon
       })
-
-      // const customIcon = L.AwesomeMarkers.icon({
-      //   icon: icon?.iconUrl ? undefined : 'info-sign',
-      //   iconColor,
-      //   markerColor,
-      //   prefix,
-      //   ...icon
-      // });
 
       markerRef.current = L.marker(position, { icon: customIcon });
       if (onClick) {
